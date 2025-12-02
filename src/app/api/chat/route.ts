@@ -17,8 +17,8 @@ export async function POST(req: Request) {
         }
 
         // Initialize Gemini with specific config from working example
-        const genAI = new GoogleGenerativeAI(apiKey, { apiVersion: "v1" });
-        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+        const genAI = new GoogleGenerativeAI(apiKey);
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
         const prompt = `
         Kamu adalah asisten virtual (Customer Service) untuk "Adventure Curug Mara", sebuah penyedia layanan wisata alam di Subang, Jawa Barat.
