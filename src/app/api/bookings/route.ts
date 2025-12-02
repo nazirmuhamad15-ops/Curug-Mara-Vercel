@@ -35,7 +35,7 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: "Destination not found" }, { status: 404 });
         }
 
-        const total_price = destination.pricing * participants;
+        const total_price = (destination as any).pricing * participants;
         const booking_number = `BK-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
         const { data, error } = await supabase
