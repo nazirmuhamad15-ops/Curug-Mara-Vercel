@@ -29,16 +29,8 @@ export default function SignInPage() {
             if (result?.error) {
                 setError("Email atau password salah");
             } else {
-                // Get session to check user role
-                const response = await fetch("/api/auth/session");
-                const session = await response.json();
-
-                // Redirect based on role
-                if (session?.user?.role === "admin") {
-                    router.push("/admin");
-                } else {
-                    router.push("/");
-                }
+                // Redirect to dashboard after successful login
+                router.push("/dashboard");
                 router.refresh();
             }
         } catch (error) {
