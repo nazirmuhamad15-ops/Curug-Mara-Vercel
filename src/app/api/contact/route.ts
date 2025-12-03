@@ -29,6 +29,7 @@ export async function POST(request: Request) {
         // Save to database
         const { data, error } = await supabaseAdmin
             .from("contact_messages")
+            // @ts-ignore
             .insert([
                 {
                     name,

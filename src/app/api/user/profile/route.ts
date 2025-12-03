@@ -7,7 +7,7 @@ import { authOptions } from "@/lib/auth-options";
 export async function GET(request: Request) {
     const session = await getServerSession(authOptions);
 
-    if (!session) {
+    if (!session || !session.user?.id) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -30,7 +30,7 @@ export async function GET(request: Request) {
 export async function PATCH(request: Request) {
     const session = await getServerSession(authOptions);
 
-    if (!session) {
+    if (!session || !session.user?.id) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -45,6 +45,7 @@ export async function PATCH(request: Request) {
 
         const { data, error } = await supabase
             .from("profiles")
+            // @ts-ignore
             .update({
                 ...updates,
                 updated_at: new Date().toISOString(),

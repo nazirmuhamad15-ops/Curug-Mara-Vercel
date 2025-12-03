@@ -40,9 +40,10 @@ export async function GET(request: Request) {
         }
 
         // Cancel bookings
-        const bookingIds = bookings.map(b => b.id);
+        const bookingIds = (bookings as any[]).map(b => b.id);
         const { error: updateError } = await supabase
             .from('bookings')
+            // @ts-ignore
             .update({ status: 'cancelled', notes: 'Auto-cancelled by system (Expired)' })
             .in('id', bookingIds);
 
@@ -52,7 +53,7 @@ export async function GET(request: Request) {
 
         return NextResponse.json({
             message: `Successfully cancelled ${bookings.length} bookings`,
-            cancelled_bookings: bookings.map(b => b.booking_number)
+            cancelled_bookings: (bookings as any[]).map(b => b.booking_number)
         });
 
     } catch (error: any) {

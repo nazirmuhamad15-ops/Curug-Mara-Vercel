@@ -13,6 +13,7 @@ export async function GET() {
 
     const { data, error } = await supabase
         .from("categories")
+        // @ts-ignore
         .upsert(categories, { onConflict: "slug" })
         .select();
 

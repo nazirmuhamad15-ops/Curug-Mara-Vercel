@@ -23,15 +23,21 @@ interface BookingModalProps {
     destinationId: string;
     destinationTitle: string;
     price?: number;
+    pricing?: number;
+    open?: boolean;
+    onOpenChange?: (open: boolean) => void;
 }
 
 export function BookingModal({
     destinationId,
     destinationTitle,
     price,
+    pricing,
+    open: externalOpen,
+    onOpenChange: externalOnOpenChange,
 }: BookingModalProps) {
     const { data: session } = useSession();
-    const [open, setOpen] = useState(false);
+    const [internalOpen, setInternalOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [successData, setSuccessData] = useState<any>(null);
     const [formData, setFormData] = useState({
@@ -41,6 +47,10 @@ export function BookingModal({
         participants: 1,
         notes: "",
     });
+
+    // Use external open state if provided, otherwise use internal
+    const open = externalOpen !== undefined ? externalOpen : internalOpen;
+    const setOpen = externalOnOpenChange || setInternalOpen;
 
     // Pre-fill name from session
     useEffect(() => {
@@ -106,7 +116,8 @@ export function BookingModal({
         setSuccessData(null);
     };
 
-    const totalPrice = price ? price * formData.participants : 0;
+    const actualPrice = pricing || price || 0;
+    const totalPrice = actualPrice * formData.participants;
 
     return (
         <Dialog open={open} onOpenChange={(isOpen) => {
@@ -235,7 +246,7 @@ export function BookingModal({
                                     />
                                 </div>
 
-                                {price && (
+                                {actualPrice > 0 && (
                                     <div className="bg-gray-50 p-4 rounded-lg flex justify-between items-center border border-gray-100">
                                         <span className="text-sm text-gray-600">Total Estimasi</span>
                                         <span className="text-lg font-bold text-primary">

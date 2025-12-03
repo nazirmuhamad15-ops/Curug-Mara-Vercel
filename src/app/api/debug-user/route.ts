@@ -22,7 +22,7 @@ export async function GET() {
 
     // Combine data
     const result = users.map(user => {
-        const profile = profiles?.find(p => p.id === user.id);
+        const profile = (profiles as any[])?.find(p => p.id === user.id);
         return {
             auth_id: user.id,
             email: user.email,
